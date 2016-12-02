@@ -69,46 +69,47 @@ class GameWindow:
         self._status_variable = tkinter.StringVar()
 
 
-        count_frame = tkinter.Frame(self._game_window)
-        count_frame.grid(row = 0, column = 0)
+        score_frame = tkinter.Frame(self._game_window)
+        score_frame.grid(row = 0, column = 0)
 
-
-        black_label = tkinter.Label(count_frame, text = 'Black: ',
+        score_label = tkinter.Label(score_frame, text = 'Scoreboard',
                                     font = _DEFAULT_FONT)
-        black_label.grid(row = 0, column = 0)
+        score_label.grid(row = 0, column = 0, columnspan = 4, pady = 5)
+
+        black_label = tkinter.Label(score_frame, text = 'Black: ',
+                                    font = _DEFAULT_FONT)
+        black_label.grid(row = 1, column = 0)
 
 
-        self._black_count_label = tkinter.Label(count_frame, textvariable = self._black_count_variable,
+        self._black_count_label = tkinter.Label(score_frame, textvariable = self._black_count_variable,
                                                 font = _DEFAULT_FONT)
-        self._black_count_label.grid(row = 0, column = 1)
+        self._black_count_label.grid(row = 1, column = 1)
 
 
-        white_label = tkinter.Label(count_frame,text = 'White: ',
+        white_label = tkinter.Label(score_frame,text = 'White: ',
                                     font = _DEFAULT_FONT)
-        white_label.grid(row = 0, column = 2)
+        white_label.grid(row = 1, column = 2)
         
 
-        self._white_count_label = tkinter.Label(count_frame, textvariable = self._white_count_variable,
+        self._white_count_label = tkinter.Label(score_frame, textvariable = self._white_count_variable,
                                                 font = _DEFAULT_FONT)
-        self._white_count_label.grid(row = 0, column = 3)
+        self._white_count_label.grid(row = 1, column = 3)
         
 
 
         self._board_canvas = tkinter.Canvas(master = self._game_window,
                                             background = _BOARD_COLOR)
-        self._board_canvas.grid(row = 1, column = 0,
-                                columnspan = 4,
-                                padx = 10, pady = 10,
+        self._board_canvas.grid(row = 1, column = 0,columnspan = 4, padx = 10,
                                 sticky = tkinter.N + tkinter.S + tkinter.E + tkinter.W)
 
 
-        self._start_game_button = tkinter.Button(master = self._board_canvas,
-                                           background = _BOARD_COLOR,
-                                           activeforeground = _BOARD_COLOR,
-                                           activebackground = _BOARD_COLOR,
-                                           bd = 0, width = 108, height = 50,
-                                           text = 'Click here to start a game',
-                                           command = self.start_game_clicked)
+        self._start_game_button = tkinter.Button(master = self._board_canvas,background = _BOARD_COLOR,
+                                                 activeforeground = _BOARD_COLOR,
+                                                 activebackground = _BOARD_COLOR,
+                                                 bd = 0, width = 50, height = 27,
+                                                 text = 'Click here to start a game',
+                                                 font = _DEFAULT_FONT,
+                                                 command = self.start_game_clicked)
 
         self._start_game_button.pack(fill = tkinter.BOTH, expand = 1)
                                            
@@ -116,7 +117,7 @@ class GameWindow:
         self._status_label = tkinter.Label(self._game_window,
                                            textvariable = self._status_variable,
                                            font = _DEFAULT_FONT)
-        self._status_label.grid(row = 2, column = 0, columnspan = 4)
+        self._status_label.grid(row = 2, column = 0, columnspan = 4, pady = 5)
 
 
 
@@ -181,13 +182,24 @@ class GameWindow:
         self._black_count_variable.set(self._othello_game._black_count)
         self._white_count_variable.set(self._othello_game._white_count)
 
-    def update_status(self) -> None:
+    def update_status(self) -> None:        
         if self._othello_game.game_not_over():
-            self._status_variable.set('Turn : ' + self._othello_game._turn)
+            if self._othello_game._turn == 'B':
+                self._status_variable.set("Black's turn")
+
+            elif self._othello_game._turn == 'W':
+                self._status_variable.set("White's turn")
 
         else:
             self._othello_game.check_winner()
-            self._status_variable.set('Winner: ' + self._othello_game._winner)
+            if self._othello_game._winner == 'B':
+                self._status_variable.set('Black wins!')
+
+            elif self._othello_game._winner == 'W':
+                self._status_variable.set('White wins!')
+
+            elif self._othello_game._winner == 'NONE':
+                self._status_variable.set("It's a draw!")
 
 
     def draw_lines(self) -> None:
