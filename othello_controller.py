@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #Name: Alfianto Widodo
 #Student ID: 69222688
 

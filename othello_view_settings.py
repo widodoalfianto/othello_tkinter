@@ -2,8 +2,11 @@ import othello_model
 import tkinter
 
 class SettingsWindow:
-    def __init__(self):
+    def __init__(self, parent_x, parent_y, parent_width, parent_height):
         self._settings_window = tkinter.Toplevel()
+        self._settings_window.geometry('%dx%d+%d+%d' % (300,300,
+                                                        parent_x + parent_width / 2 - 150,
+                                                        parent_y + parent_height / 2 - 150))
         self._settings_window.wm_title('Othello Settings')
         self._settings = othello_model.OthelloSettings()
 
@@ -14,14 +17,14 @@ class SettingsWindow:
 
         
         row_label = tkinter.Label(self._settings_window,
-                                  text = 'Number of rows:', width = 25,
+                                  text = 'Number of rows:',
                                   anchor = tkinter.W)
         row_label.grid(row = 1, column = 0, sticky = tkinter.E + tkinter.S,
                        padx = 10, pady = 5)
 
 
         column_label = tkinter.Label(self._settings_window,
-                                     text = 'Number of columns:', width = 25,
+                                     text = 'Number of columns:',
                                      anchor = tkinter.W)
         column_label.grid(row = 2, column = 0,
                           sticky = tkinter.E + tkinter.S,
@@ -29,7 +32,7 @@ class SettingsWindow:
 
 
         first_move_label = tkinter.Label(self._settings_window,
-                                         text = 'First move:', width = 25,
+                                         text = 'First move:',
                                          anchor = tkinter.W)
         first_move_label.grid(row = 3, column = 0,
                               sticky = tkinter.E + tkinter.S,
@@ -37,7 +40,7 @@ class SettingsWindow:
 
 
         top_left_label = tkinter.Label(self._settings_window,
-                                       text = 'Color of top left disc:', width = 25,
+                                       text = 'Color of top left disc:',
                                        anchor = tkinter.W)
         top_left_label.grid(row = 4, column = 0,
                             sticky = tkinter.E + tkinter.S,
@@ -45,7 +48,7 @@ class SettingsWindow:
         
 
         more_or_less_label = tkinter.Label(self._settings_window,
-                                           text = 'More or less to win:', width = 25,
+                                           text = 'More or less to win:',
                                            anchor = tkinter.W)
         more_or_less_label.grid(row = 5, column = 0,
                                 sticky = tkinter.E + tkinter.S,

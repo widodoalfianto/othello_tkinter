@@ -30,13 +30,17 @@ class OthelloDisc:
 
 
 class InvalidDialog:
-    def __init__(self):
+    def __init__(self, parent_x: int, parent_y: int,
+                 parent_width: int, parent_height: int):
         self._invalid_dialog = tkinter.Toplevel()
         self._invalid_dialog.wm_title('Invalid Move')
 
+        self._invalid_dialog.geometry(('%dx%d+%d+%d' % (200, 80,
+                                                        parent_x + parent_width / 2 - 100,
+                                                        parent_y + parent_height / 2 - 40)))
+
         invalid_label = tkinter.Label(self._invalid_dialog,
-                                      text = "That's an invalid move!",
-                                      width = 45)
+                                      text = "That's an invalid move!")
         invalid_label.grid(row = 0, column = 0, pady = 5,
                            sticky = tkinter.S)
 
@@ -59,7 +63,7 @@ class InvalidDialog:
 
 class GameWindow:
     def __init__(self):
-        self._game_window = tkinter.Tk()
+        self._game_window = tkinter.Tk()    
         self._game_window.wm_title('Othello')
         
         self._othello_game = othello_model.OthelloGame()
@@ -139,7 +143,13 @@ class GameWindow:
         
         row_num = int((event.y - _BOARD_EDGES) // grid_height)
         column_num = int((event.x - _BOARD_EDGES) // grid_width)
-        
+
+        window_x = self._game_window.winfo_x()
+        window_y = self._game_window.winfo_y()
+
+        window_width = self._game_window.winfo_width()
+        window_height = self._game_window.winfo_height()
+
         try:
             if self._othello_game.is_valid(row_num, column_num):
                 self._othello_game.reverse(row_num, column_num)
@@ -148,7 +158,7 @@ class GameWindow:
                 self.update_widgets()
                 
             else:
-                invalid_dialog = InvalidDialog()
+                invalid_dialog = InvalidDialog(window_x, window_y, window_width, window_height)
                 invalid_dialog.show()
 
         except othello_model.GameOverError:
@@ -157,7 +167,16 @@ class GameWindow:
 
     def start_game_clicked(self) -> None:
         try:
-            settings_window = othello_view_settings.SettingsWindow()
+            window_x = self._game_window.winfo_x()
+            window_y = self._game_window.winfo_y()
+
+            window_width = self._game_window.winfo_width()
+            window_height = self._game_window.winfo_height()
+            
+            settings_window = othello_view_settings.SettingsWindow(window_x,
+                                                                   window_y,
+                                                                   window_width,
+                                                                   window_height)
             settings_window.show()
 
             self._othello_game._settings = settings_window._settings
