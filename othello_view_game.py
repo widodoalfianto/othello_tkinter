@@ -103,12 +103,13 @@ class GameWindow:
 
 
         self._start_game_button = tkinter.Button(master = self._board_canvas,
-                                           background = _BOARD_COLOR,
-                                           activeforeground = _BOARD_COLOR,
-                                           activebackground = _BOARD_COLOR,
-                                           bd = 0, width = 108, height = 50,
-                                           text = 'Click here to start a game',
-                                           command = self.start_game_clicked)
+                                                 background = _BOARD_COLOR,
+                                                 activeforeground = _BOARD_COLOR,
+                                                 activebackground = _BOARD_COLOR,
+                                                 bd = 0, width = 80, height = 40,
+                                                 text = 'Click here to start a game',
+                                                 font = _DEFAULT_FONT,
+                                                 command = self.start_game_clicked)
 
         self._start_game_button.pack(fill = tkinter.BOTH, expand = 1)
                                            
@@ -233,4 +234,3 @@ class GameWindow:
 
     def run(self) -> None:
         self._game_window.mainloop()
-
