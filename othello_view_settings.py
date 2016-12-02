@@ -144,7 +144,7 @@ class SettingsWindow:
         
 
 
-    def run(self):
+    def show(self):
         self._settings_window.grab_set()
         self._settings_window.wait_window()
 
@@ -155,6 +155,5 @@ class SettingsWindow:
         self._settings._top_left = self._top_left_variable.get()
         self._settings._more_or_less = self._more_or_less_variable.get()
         
-        self._settings_window.quit()
         self._settings_window.destroy()
 

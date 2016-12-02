@@ -157,19 +157,17 @@ class GameWindow:
 
     def start_game_clicked(self) -> None:
         settings_window = othello_view_settings.SettingsWindow()
-        settings_window.run()
+        settings_window.show()
 
         self._othello_game._settings = settings_window._settings
         self._othello_game.new_game()
         
         self._board_canvas.bind('<Configure>', self.on_canvas_resized)
         self._board_canvas.bind('<Button-1>', self.on_canvas_clicked)
-
-        self._start_game_button.destroy()
-
+        
+        self._start_game_button.pack_forget()
         self.update_widgets()
         
-         
 
     def update_widgets(self) -> None:
         self.update_count()

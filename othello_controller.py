@@ -1,8 +1,8 @@
+#!/usr/bin/env python
 #Name: Alfianto Widodo
 #Student ID: 69222688
 
 import othello_view_game
 
 if __name__ == '__main__':
-    othello_app = othello_view_game.GameWindow()
-    othello_app.run()
+    othello_view_game.GameWindow().run()
