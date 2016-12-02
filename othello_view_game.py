@@ -1,13 +1,21 @@
+#Name: Alfianto Widodo
+#Student ID: 69222688
+
 import tkinter
 import othello_view_settings
 import othello_model
 
-_DEFAULT_FONT = ('Arial', 14, 'bold')
+_DEFAULT_FONT = ('Calibri', 14, 'bold')
 _BOARD_COLOR = '#006622'
 _BOARD_EDGES = 20
 
 
 class OthelloDisc:
+    '''
+    A class that creates an othello_disc object containing
+    the following information: its color and its bounding box
+    coordinates
+    '''
     def __init__(self, row_num: int, column_num: int,
                  total_row: int, total_column: int, color: str,
                  canvas_width: int, canvas_height: int):
@@ -30,13 +38,17 @@ class OthelloDisc:
 
 
 class InvalidDialog:
+    '''
+    creates a tkinter.Toplevel object centered on the game_window
+    that tells the user they made an invalid move
+    '''
     def __init__(self, parent_x: int, parent_y: int,
                  parent_width: int, parent_height: int):
         self._invalid_dialog = tkinter.Toplevel()
         self._invalid_dialog.wm_title('Invalid Move')
 
-        self._invalid_dialog.geometry(('%dx%d+%d+%d' % (200, 80,
-                                                        parent_x + parent_width / 2 - 100,
+        self._invalid_dialog.geometry(('%dx%d+%d+%d' % (300, 80,
+                                                        parent_x + parent_width / 2 - 150,
                                                         parent_y + parent_height / 2 - 40)))
 
         invalid_label = tkinter.Label(self._invalid_dialog,
@@ -54,25 +66,45 @@ class InvalidDialog:
         self._invalid_dialog.columnconfigure(0, weight = 1)
 
     def on_resume(self):
+        '''
+        destroys the dialog when the resume button is pressed
+        '''
         self._invalid_dialog.destroy()
-
+        
     def show(self):
         self._invalid_dialog.grab_set()
         self._invalid_dialog.wait_window()
 
 
 class GameWindow:
+    '''
+    creates a tkinter.Tk object that acts as a GUI through
+    which a user(s) can play a game of othello
+    '''
     def __init__(self):
         self._game_window = tkinter.Tk()    
         self._game_window.wm_title('Othello')
+
+        '''places window in the middle of the screen'''
+        screen_width = self._game_window.winfo_screenwidth()
+        screen_height = self._game_window.winfo_screenheight()
         
+        self._game_window.geometry(('%dx%d+%d+%d' % (750, 820,
+                                                     screen_width / 2 - 375,
+                                                     screen_height / 2 - 410)))
+
+                         
         self._othello_game = othello_model.OthelloGame()
 
+
+        '''settings up variable objects for the game window'''
         self._black_count_variable = tkinter.IntVar()
         self._white_count_variable = tkinter.IntVar()
         self._status_variable = tkinter.StringVar()
 
 
+
+        '''scoreboard components'''
         score_frame = tkinter.Frame(self._game_window)
         score_frame.grid(row = 0, column = 0)
 
@@ -101,6 +133,8 @@ class GameWindow:
         
 
 
+
+        '''the canvas to simulate the game board and the start game button'''
         self._board_canvas = tkinter.Canvas(master = self._game_window,
                                             background = _BOARD_COLOR)
         self._board_canvas.grid(row = 1, column = 0,columnspan = 4, padx = 10,
@@ -118,6 +152,7 @@ class GameWindow:
         self._start_game_button.pack(fill = tkinter.BOTH, expand = 1)
                                            
 
+        '''game status label'''
         self._status_label = tkinter.Label(self._game_window,
                                            textvariable = self._status_variable,
                                            font = _DEFAULT_FONT)
@@ -135,6 +170,7 @@ class GameWindow:
         self.update_widgets()
 
     def on_canvas_clicked(self, event: tkinter.Event) -> None:
+        '''response to a canvas click(user making a move)'''
         canvas_width = self._board_canvas.winfo_width()
         canvas_height = self._board_canvas.winfo_height()
 
@@ -166,6 +202,12 @@ class GameWindow:
             
 
     def start_game_clicked(self) -> None:
+        '''
+        Shows the settings window dialog when the
+        game window's start button is clicked and
+        then removing the button if the game was
+        started with proper settings
+        '''
         try:
             window_x = self._game_window.winfo_x()
             window_y = self._game_window.winfo_y()
@@ -192,17 +234,27 @@ class GameWindow:
             pass
 
     def update_widgets(self) -> None:
-        self.update_count()
-        self.draw_lines()
-        self.draw_discs()
-        self.update_status()
+        '''
+        makes a call to other attributes that updates
+        the window
+        '''
+        self._update_count()
+        self._draw_lines()
+        self._draw_discs()
+        self._update_status()
 
 
-    def update_count(self) -> None:
+    def _update_count(self) -> None:
+        '''Updates the discs count on the scoreboard'''
         self._black_count_variable.set(self._othello_game._black_count)
         self._white_count_variable.set(self._othello_game._white_count)
 
-    def update_status(self) -> None:        
+    def _update_status(self) -> None:
+        '''
+        Updates the label that shows the status
+        of the game, printing out whether someone
+        has won or whose turn it is
+        '''
         if self._othello_game.game_not_over():
             if self._othello_game._turn == 'B':
                 self._status_variable.set("Black's turn")
@@ -222,7 +274,11 @@ class GameWindow:
                 self._status_variable.set("It's a draw!")
 
 
-    def draw_lines(self) -> None:
+    def _draw_lines(self) -> None:
+        '''
+        draws the lines on the canvas to simulate an othello
+        board according to the settings that were input
+        '''
         canvas_width = self._board_canvas.winfo_width()
         canvas_height = self._board_canvas.winfo_height()
         
@@ -242,7 +298,11 @@ class GameWindow:
                                            
     
 
-    def draw_discs(self) -> None:
+    def _draw_discs(self) -> None:
+        '''
+        draws the discs according to how the board in
+        othello_game object looks like
+        '''
         canvas_width = self._board_canvas.winfo_width()
         canvas_height = self._board_canvas.winfo_height()
         

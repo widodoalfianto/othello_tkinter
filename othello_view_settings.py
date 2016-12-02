@@ -1,3 +1,6 @@
+#Name: Alfianto Widodo
+#Student ID: 69222688
+
 import othello_model
 import tkinter
 
