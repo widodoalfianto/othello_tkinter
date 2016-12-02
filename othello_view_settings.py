@@ -140,8 +140,7 @@ class SettingsWindow:
 
         self._settings_window.columnconfigure(0, weight = 1)
         self._settings_window.columnconfigure(1, weight = 1)
-        
-        
+                
 
 
     def show(self):
