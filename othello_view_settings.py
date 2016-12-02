@@ -3,34 +3,53 @@ import tkinter
 
 class SettingsWindow:
     def __init__(self):
-        self._settings_window = tkinter.Tk()
+        self._settings_window = tkinter.Toplevel()
         self._settings_window.wm_title('Othello Settings')
         self._settings = othello_model.OthelloSettings()
 
+        instruction_label = tkinter.Label(self._settings_window,
+                                           text = 'Please specify the game settings')
+        instruction_label.grid(row = 0, column = 0, columnspan = 2,
+                                     sticky = tkinter.S, pady = 10)
 
+        
         row_label = tkinter.Label(self._settings_window,
-                                  text = 'Number of rows:')
-        row_label.grid(row = 0, column = 0, sticky = tkinter.W)
+                                  text = 'Number of rows:', width = 25,
+                                  anchor = tkinter.W)
+        row_label.grid(row = 1, column = 0, sticky = tkinter.E + tkinter.S,
+                       padx = 10, pady = 5)
 
 
         column_label = tkinter.Label(self._settings_window,
-                                     text = 'Number of columns:')
-        column_label.grid(row = 1, column = 0, sticky = tkinter.W)
+                                     text = 'Number of columns:', width = 25,
+                                     anchor = tkinter.W)
+        column_label.grid(row = 2, column = 0,
+                          sticky = tkinter.E + tkinter.S,
+                          padx = 10, pady = 5)
 
 
         first_move_label = tkinter.Label(self._settings_window,
-                                         text = 'First move:')
-        first_move_label.grid(row = 2, column = 0, sticky = tkinter.W)
+                                         text = 'First move:', width = 25,
+                                         anchor = tkinter.W)
+        first_move_label.grid(row = 3, column = 0,
+                              sticky = tkinter.E + tkinter.S,
+                              padx = 10, pady = 5)
 
 
         top_left_label = tkinter.Label(self._settings_window,
-                                       text = 'Color of top left disc:')
-        top_left_label.grid(row = 3, column = 0, sticky = tkinter.W)
+                                       text = 'Color of top left disc:', width = 25,
+                                       anchor = tkinter.W)
+        top_left_label.grid(row = 4, column = 0,
+                            sticky = tkinter.E + tkinter.S,
+                            padx = 10, pady = 5)
         
 
         more_or_less_label = tkinter.Label(self._settings_window,
-                                           text = 'More or less to win:')
-        more_or_less_label.grid(row = 4, column = 0, sticky = tkinter.W)
+                                           text = 'More or less to win:', width = 25,
+                                           anchor = tkinter.W)
+        more_or_less_label.grid(row = 5, column = 0,
+                                sticky = tkinter.E + tkinter.S,
+                                padx = 10, pady = 5)
 
 
 
@@ -42,7 +61,9 @@ class SettingsWindow:
                                              self._row_variable,
                                              4, 6, 8, 10, 12, 14, 16)
 
-        row_option_menu.grid(row = 0, column = 1, sticky = tkinter.E)
+        row_option_menu.grid(row = 1, column = 1,
+                             sticky = tkinter.W + tkinter.S,
+                             padx = 10)
 
 
 
@@ -54,7 +75,9 @@ class SettingsWindow:
                                                 self._column_variable,
                                                 4, 6, 8, 10, 12, 14, 16)
 
-        column_option_menu.grid(row = 1, column = 1, sticky = tkinter.E)
+        column_option_menu.grid(row = 2, column = 1,
+                                sticky = tkinter.W + tkinter.S,
+                                padx = 10)
 
 
 
@@ -66,7 +89,9 @@ class SettingsWindow:
                                                     self._first_move_variable,
                                                     'B', 'W')
 
-        first_move_option_menu.grid(row = 2, column = 1, sticky = tkinter.E)
+        first_move_option_menu.grid(row = 3, column = 1,
+                                    sticky = tkinter.W + tkinter.S,
+                                    padx = 10)
 
 
 
@@ -78,7 +103,9 @@ class SettingsWindow:
                                                   self._top_left_variable,
                                                   'B', 'W')
 
-        top_left_option_menu.grid(row = 3, column = 1, sticky = tkinter.E)
+        top_left_option_menu.grid(row = 4, column = 1,
+                                  sticky = tkinter.W + tkinter.S,
+                                  padx = 10)
 
 
 
@@ -91,24 +118,37 @@ class SettingsWindow:
                                                       self._more_or_less_variable,
                                                       '>', '<')
 
-        more_or_less_option_menu.grid(row = 4, column = 1, sticky = tkinter.E)
+        more_or_less_option_menu.grid(row = 5, column = 1,
+                                      sticky = tkinter.W + tkinter.S,
+                                      padx = 10)
 
 
         
 
-        '''OK BUTTON'''
-        ok_button = tkinter.Button(master = self._settings_window,
-                                   text = 'OK',
-                                   font = ('Arial', 14),
-                                   command = self._on_ok_button_pressed)
+        '''Start Game Button'''
+        start_button = tkinter.Button(master = self._settings_window,
+                                   text = 'Start game with these settings',
+                                   font = ('Arial', 10),
+                                   command = self.on_start)
 
-        ok_button.grid(row = 5, column = 1, sticky = tkinter.E)
+        start_button.grid(row = 6, column = 0, sticky = tkinter.N,
+                       columnspan = 3, padx = 10, pady = 10)
+
+
+        self._settings_window.rowconfigure(0, weight = 1)
+        self._settings_window.rowconfigure(6, weight = 1)
+
+        self._settings_window.columnconfigure(0, weight = 1)
+        self._settings_window.columnconfigure(1, weight = 1)
+        
+        
 
 
     def run(self):
-        self._settings_window.mainloop()
+        self._settings_window.grab_set()
+        self._settings_window.wait_window()
 
-    def _on_ok_button_pressed(self):
+    def on_start(self):
         self._settings._rows = self._row_variable.get()
         self._settings._columns = self._column_variable.get()
         self._settings._first_move = self._first_move_variable.get()
@@ -117,3 +157,4 @@ class SettingsWindow:
         
         self._settings_window.quit()
         self._settings_window.destroy()
+

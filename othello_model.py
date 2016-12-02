@@ -7,6 +7,14 @@ BLACK = 'B'
 WHITE = 'W'
 
 
+class GameOverError(Exception):
+    '''
+    raised when user tries to make
+    a move when game is over
+    '''
+    pass
+
+
 class EndDiscError(Exception):
     '''
     raised when the attribute check_direction
@@ -53,7 +61,7 @@ class OthelloGame:
         self._board = []
         self._turn = str()
         self._settings = OthelloSettings()
-        self._game_not_over = bool()
+        self._game_over = bool()
         self._black_count = int()
         self._white_count = int()
         self._winner = str()
@@ -198,7 +206,10 @@ class OthelloGame:
 
     def is_valid(self, row_num, column_num) -> bool:
         '''decides if a move is valid'''
-        if self._check_end_of_board(row_num, column_num):
+        if self._game_over:
+            raise GameOverError
+            
+        elif self._check_end_of_board(row_num, column_num):
         
             if self._board[row_num][column_num] != EMPTY:
                 return False
@@ -300,7 +311,7 @@ class OthelloGame:
             self._board[disc[0]][disc[1]] = self._turn
 
 
-    def check_game_over(self) -> bool:
+    def game_not_over(self) -> bool:
         '''
         checks if a player can make any valid move
         if not, it moves on to the next player and checks
@@ -317,6 +328,7 @@ class OthelloGame:
                 return True
 
             else:
+                self._game_over = True
                 return False
 
 
